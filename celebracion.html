@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queda aceptado</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Work+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --text-dark: #FBF6EE;
+            --text-muted: #97A8CB;
+            --accent: #E9B9B4;
+            --accent-hover: #B5697A;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1)
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            background: linear-gradient(-45deg, #0C1526, #182548, #101B33, #182548);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-dark);
+            font-family: 'Work Sans', sans-serif;
+            font-weight: 400;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.3);
+            border-radius: 24px
+        }
+
+        h1,
+        h2,
+        h3,
+        .display {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: #0C1526
+        }
+
+        .eyebrow {
+            font-size: 0.75rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem
+        }
+
+        .floating-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden
+        }
+
+        .floating-heart {
+            position: absolute;
+            animation: floatHeart linear infinite;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            opacity: 0
+        }
+
+        .floating-heart svg {
+            width: 100%;
+            height: 100%
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(110vh) rotate(-15deg) scale(1);
+                opacity: 0
+            }
+
+            10% {
+                opacity: 0.4
+            }
+
+            90% {
+                opacity: 0.4
+            }
+
+            100% {
+                transform: translateY(-10vh) rotate(15deg) scale(0.8);
+                opacity: 0
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1)
+        }
+
+        .reveal.in {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        section {
+            padding: 6rem 1.5rem;
+            max-width: 800px;
+            margin: 0 auto
+        }
+
+        .section-head {
+            text-align: center;
+            margin-bottom: 3.5rem
+        }
+
+        .section-head h2 {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-style: italic;
+            color: var(--text-dark);
+            margin-top: 0.5rem
+        }
+
+        .celebration-hero {
+            min-height: 70svh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 3rem 1.5rem
+        }
+
+        .celebration-title {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-style: italic;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: rise 1s ease forwards
+        }
+
+        .celebration-sub {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            opacity: 0;
+            animation: rise 1.2s ease forwards
+        }
+
+        .celebration-date {
+            margin-top: 1.5rem;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--accent);
+            font-size: 1.2rem;
+            opacity: 0;
+            animation: rise 1.4s ease forwards
+        }
+
+        @keyframes rise {
+            from {
+                opacity: 0;
+                transform: translateY(30px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        /* ============ LETTER ============ */
+        .letter-wrap { position: relative; }
+
+        .letter {
+            padding: 4rem 3.5rem;
+            position: relative;
+        }
+
+        .letter::before {
+            content: '"';
+            font-family: 'Playfair Display', serif;
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-size: 6rem;
+            color: rgba(233, 185, 180, 0.15);
+            line-height: 1;
+        }
+
+        .letter-salute {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .letter p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .letter p:last-of-type { margin-bottom: 0; }
+
+        .letter-sign {
+            margin-top: 3rem;
+            text-align: right;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.4rem;
+            color: var(--text-dark);
+        }
+
+        .letter-sign span {
+            display: block;
+            font-family: 'Work Sans', sans-serif;
+            font-style: normal;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.4rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center
+        }
+
+        .stat-card {
+            padding: 2.5rem 1.5rem;
+            transition: transform 0.3s ease
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px)
+        }
+
+        .stat-num {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 5vw, 3rem);
+            color: var(--accent);
+            font-weight: 600
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.8rem;
+            line-height: 1.5
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem
+        }
+
+        .gallery-item {
+            padding: 1rem 1rem 2.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer
+        }
+
+        .gallery-item:nth-child(odd) {
+            transform: rotate(-3deg)
+        }
+
+        .gallery-item:nth-child(even) {
+            transform: rotate(2deg)
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.08) rotate(0deg) !important;
+            z-index: 10;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.15)
+        }
+
+        .ph-frame {
+            aspect-ratio: 1/1;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2)
+        }
+
+        .ph-frame svg {
+            width: 30%;
+            stroke: var(--accent);
+            opacity: 0.5
+        }
+
+        .ph-note {
+            position: absolute;
+            bottom: 10px;
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            color: var(--text-muted)
+        }
+
+        .gallery-item img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 12px;
+            display: block;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.2)
+        }
+
+        .gallery-item figcaption {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1rem;
+            text-align: center;
+            margin-top: 1.2rem;
+            color: var(--text-dark)
+        }
+
+        @media(max-width:768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1.5rem 3rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            letter-spacing: 0.08em
+        }
+
+        .confetti {
+            position: fixed;
+            z-index: 50;
+            pointer-events: none;
+            animation: fall linear forwards
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(720deg);
+                opacity: 0
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="floating-bg" id="floatingBg"></div>
+
+    <section class="celebration-hero">
+        <h1 class="celebration-title">Queda aceptado! <br>🤍❤️</h1>
+        <p class="celebration-sub">A partir de hoy, formalmente, sos mi novia.<br>Bienvenida a nuestra nueva etapa. TE AMO MUCHO.</p>
+        <p class="celebration-date">4/08/2026</p>
+    </section>
+
+    <section>
+        <div class="section-head reveal">
+            <p class="eyebrow">Nuestra historia</p>
+            <h2>En pequeñas cifras</h2>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card glass reveal">
+                <div class="stat-num">181</div>
+                <div class="stat-label">días hablando todos los días</div>
+            </div>
+            <div class="stat-card glass reveal">
+                <div class="stat-num">56.914</div>
+                <div class="stat-label">mensajes entre los dos</div>
+            </div>
+            <div class="stat-card glass reveal">
+                <div class="stat-num">1.822</div>
+                <div class="stat-label">fotos compartidas</div>
+            </div>
+            <div class="stat-card glass reveal">
+                <div class="stat-num">1.576</div>
+                <div class="stat-label">audios enviados</div>
+            </div>
+            <div class="stat-card glass reveal">
+                <div class="stat-num">1.355</div>
+                <div class="stat-label">veces que dijimos &ldquo;mi vida&rdquo;</div>
+            </div>
+            <div class="stat-card glass reveal">
+                <div class="stat-num">620</div>
+                <div class="stat-label">veces que dijimos &ldquo;mi amor&rdquo;</div>
+            </div>
+            <div class="stat-card glass reveal">
+                <div class="stat-num">328</div>
+                <div class="stat-label">veces que dijimos &ldquo;te amo&rdquo;</div>
+            </div>
+            <div class="stat-card glass reveal">
+                <div class="stat-num">1.659</div>
+                <div class="stat-label">"jajaja" contados</div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-head reveal">
+            <h2>Momentos inolvidables</h2>
+            <p style="color: var(--text-muted); font-size: 1rem; margin-top: 0.75rem; font-style: italic;">Estos son algunos de los muchos momentos juntos. Faltan muchos más por venir y serán agregados aquí.</p>
+        </div>
+        <div class="gallery-grid">
+            <figure class="gallery-item glass reveal">
+                <img src="imagenes/07-02-26.jpeg" alt="07 de febrero de 2026" loading="lazy">
+                <figcaption>07 / 02 / 2026</figcaption>
+            </figure>
+            <figure class="gallery-item glass reveal">
+                <img src="imagenes/04-04-26.jpeg" alt="04 de abril de 2026" loading="lazy" style="object-fit: contain; background: rgba(255,255,255,0.05);">
+                <figcaption>04 / 04 / 2026</figcaption>
+            </figure>
+            <figure class="gallery-item glass reveal">
+                <img src="imagenes/08-04-26.jpeg" alt="08 de abril de 2026" loading="lazy">
+                <figcaption>08 / 04 / 2026</figcaption>
+            </figure>
+            <figure class="gallery-item glass reveal">
+                <img src="imagenes/13-04-26.jpeg" alt="13 de abril de 2026" loading="lazy">
+                <figcaption>13 / 04 / 2026</figcaption>
+            </figure>
+            <figure class="gallery-item glass reveal">
+                <img src="imagenes/16-04-26.jpeg" alt="16 de abril de 2026" loading="lazy">
+                <figcaption>16 / 04 / 2026</figcaption>
+            </figure>
+            <figure class="gallery-item glass reveal">
+                <img src="imagenes/21-04-26.jpeg" alt="21 de abril de 2026" loading="lazy">
+                <figcaption>21 / 04 / 2026</figcaption>
+            </figure>
+            <figure class="gallery-item glass reveal">
+                <img src="imagenes/12-05-26.jpeg" alt="12 de mayo de 2026" loading="lazy">
+                <figcaption>12 / 05 / 2026</figcaption>
+            </figure>
+            <figure class="gallery-item glass reveal">
+                <img src="imagenes/31-05-26.jpeg" alt="31 de mayo de 2026" loading="lazy">
+                <figcaption>31 / 05 / 2026</figcaption>
+            </figure>
+            <figure class="gallery-item glass reveal">
+                <img src="imagenes/02-06-26.jpeg" alt="02 de junio de 2026" loading="lazy">
+                <figcaption>02 / 06 / 2026</figcaption>
+            </figure>
+            <figure class="gallery-item glass reveal">
+                <img src="imagenes/03-06-26.jpeg" alt="03 de junio de 2026" loading="lazy">
+                <figcaption>03 / 06 / 2026</figcaption>
+            </figure>
+            <figure class="gallery-item glass reveal">
+                <img src="imagenes/06-06-26.jpeg" alt="06 de junio de 2026" loading="lazy">
+                <figcaption>06 / 06 / 2026</figcaption>
+            </figure>
+            <figure class="gallery-item glass reveal">
+                <img src="imagenes/22-06-26.jpeg" alt="22 de junio de 2026" loading="lazy">
+                <figcaption>22 / 06 / 2026</figcaption>
+            </figure>
+            <figure class="gallery-item glass reveal">
+                <img src="imagenes/20-07-26.jpeg" alt="20 de julio de 2026" loading="lazy">
+                <figcaption>20 / 07 / 2026</figcaption>
+            </figure>
+            <figure class="gallery-item glass reveal">
+                <img src="imagenes/29-07-26.jpeg" alt="29 de julio de 2026" loading="lazy">
+                <figcaption>29 / 07 / 2026</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <footer></footer>
+
+    <script>
+        const bg = document.getElementById('floatingBg');
+        const heartSVG = '<svg viewBox="0 0 32 29" fill="rgba(255,255,255,0.12)"><path d="M16 28.5 C16 28.5 1.5 19.8 1.5 9.8 C1.5 4.9 5.4 1 10.2 1 C13 1 15 2.4 16 4.3 C17 2.4 19 1 21.8 1 C26.6 1 30.5 4.9 30.5 9.8 C30.5 19.8 16 28.5 16 28.5Z"/></svg>';
+        for (let i = 0; i < 22; i++) {
+            const h = document.createElement('div');
+            h.className = 'floating-heart'; h.innerHTML = heartSVG;
+            const size = Math.random() * 25 + 15;
+            const dur = Math.random() * 15 + 15;
+            h.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + (Math.random() * 100) + 'vw;animation-duration:' + dur + 's;animation-delay:-' + (Math.random() * dur) + 's';
+            bg.appendChild(h);
+        }
+
+        // Confetti on load
+        const colors = ['#E9B9B4', '#B5697A', '#FBF6EE', '#0C1526'];
+        for (let i = 0; i < 150; i++) {
+            const c = document.createElement('div');
+            c.className = 'confetti';
+            if (Math.random() > 0.5) c.style.borderRadius = '50%';
+            const size = Math.random() * 8 + 6;
+            c.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + (Math.random() * 100) + 'vw;background:' + colors[Math.floor(Math.random() * colors.length)] + ';animation-duration:' + (2 + Math.random() * 3) + 's;opacity:' + (Math.random() + 0.5);
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 6000);
+        }
+
+        // Reveal on scroll
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach((el, i) => {
+            el.style.transitionDelay = (i % 5) * 0.1 + 's';
+            io.observe(el);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Alejandra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Work+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --text-dark: #FBF6EE;
+            --text-muted: #97A8CB;
+            --accent: #E9B9B4;
+            --accent-hover: #B5697A;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #0C1526, #182548, #101B33, #182548);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-dark);
+            font-family: 'Work Sans', sans-serif;
+            font-weight: 400;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Glassmorphism utility */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.3);
+            border-radius: 24px;
+        }
+
+        h1,
+        h2,
+        h3,
+        .display {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: #0C1526;
+        }
+
+        .eyebrow {
+            font-size: 0.75rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Background floating elements */
+        .floating-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-heart {
+            position: absolute;
+            animation: floatHeart linear infinite;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            opacity: 0;
+        }
+
+        .floating-heart svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(110vh) rotate(-15deg) scale(1);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.4;
+            }
+
+            90% {
+                opacity: 0.4;
+            }
+
+            100% {
+                transform: translateY(-10vh) rotate(15deg) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        /* Phases */
+        .phase {
+            display: none;
+            opacity: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .phase.active {
+            display: block;
+            animation: fadeInPhase 1s ease forwards;
+        }
+
+        @keyframes fadeInPhase {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============ PHASE 1: LOGIN ============ */
+        .login-section {
+            min-height: 100svh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .login-card {
+            padding: 4rem 3rem;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-card h2 {
+            font-size: 2.2rem;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-card p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .login-card input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: var(--text-dark);
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .login-card input:focus {
+            border-color: var(--accent);
+        }
+
+        .login-card button {
+            background: var(--accent);
+            color: #0C1526;
+            border: none;
+            padding: 1rem 3rem;
+            font-family: 'Work Sans', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(233, 185, 180, 0.3);
+            letter-spacing: 0.05em;
+            width: 100%;
+        }
+
+        .login-card button:hover {
+            transform: translateY(-2px);
+            background: var(--accent-hover);
+            color: #fff;
+        }
+
+        .error-msg {
+            color: #ff6b6b !important;
+            font-size: 0.85rem !important;
+            margin-top: 1.5rem !important;
+            margin-bottom: 0 !important;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .error-msg.show {
+            opacity: 1;
+        }
+
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+        }
+
+        @keyframes shake {
+
+            10%,
+            90% {
+                transform: translate3d(-2px, 0, 0);
+            }
+
+            20%,
+            80% {
+                transform: translate3d(4px, 0, 0);
+            }
+
+            30%,
+            50%,
+            70% {
+                transform: translate3d(-6px, 0, 0);
+            }
+
+            40%,
+            60% {
+                transform: translate3d(6px, 0, 0);
+            }
+        }
+
+        /* ============ HERO ============ */
+        .hero {
+            min-height: 100svh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            text-align: center;
+            padding: 3rem 1.5rem;
+        }
+
+        .hero-card {
+            padding: 4rem 3rem;
+            max-width: 500px;
+            width: 100%;
+            opacity: 0;
+            animation: rise 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        .hero-heart {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1.5rem;
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 1.5;
+            animation: pulseHeart 2.5s infinite ease-in-out;
+            filter: drop-shadow(0 0 10px rgba(233, 185, 180, 0.4));
+        }
+
+        @keyframes pulseHeart {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            15% {
+                transform: scale(1.1);
+            }
+
+            30% {
+                transform: scale(1);
+            }
+
+            45% {
+                transform: scale(1.1);
+            }
+
+            80% {
+                transform: scale(1);
+            }
+        }
+
+        .hero h1 {
+            color: var(--text-dark);
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-style: italic;
+            margin: 0.5rem 0;
+            background: linear-gradient(45deg, #FBF6EE, #E9B9B4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes rise {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-cue {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeIn 1s 1.5s forwards, bob 2.5s infinite ease-in-out;
+        }
+
+        .scroll-cue svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--accent);
+            stroke-width: 2;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes bob {
+
+            0%,
+            100% {
+                transform: translate(-50%, 0);
+            }
+
+            50% {
+                transform: translate(-50%, 10px);
+            }
+        }
+
+        /* ============ SECTION SHARED ============ */
+        section {
+            padding: 6rem 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .reveal.in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-head {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .section-head h2 {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-style: italic;
+            color: var(--text-dark);
+            margin-top: 0.5rem;
+        }
+
+        /* ============ LETTER ============ */
+        .letter-wrap {
+            position: relative;
+        }
+
+        .letter {
+            padding: 4rem 3.5rem;
+            position: relative;
+        }
+
+        .letter::before {
+            content: '"';
+            font-family: 'Playfair Display', serif;
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-size: 6rem;
+            color: rgba(233, 185, 180, 0.15);
+            line-height: 1;
+        }
+
+        .letter-salute {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .letter p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .letter p:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .letter-sign {
+            margin-top: 3rem;
+            text-align: right;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.4rem;
+            color: var(--text-dark);
+        }
+
+        .letter-sign span {
+            display: block;
+            font-family: 'Work Sans', sans-serif;
+            font-style: normal;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.4rem;
+        }
+
+        /* ============ STATS ============ */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-card {
+            padding: 2.5rem 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-num {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 5vw, 3rem);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.8rem;
+            line-height: 1.5;
+        }
+
+        /* ============ GALLERY ============ */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .gallery-item {
+            padding: 1rem 1rem 2.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .gallery-item:nth-child(odd) {
+            transform: rotate(-3deg);
+        }
+
+        .gallery-item:nth-child(even) {
+            transform: rotate(2deg);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.08) rotate(0deg) !important;
+            z-index: 10;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .ph-frame {
+            aspect-ratio: 1/1;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .ph-frame svg {
+            width: 30%;
+            stroke: var(--accent);
+            opacity: 0.5;
+        }
+
+        .ph-note {
+            position: absolute;
+            bottom: 10px;
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .gallery-item figcaption {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1rem;
+            text-align: center;
+            margin-top: 1.2rem;
+            color: var(--text-dark);
+        }
+
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+
+        /* ============ QUESTION ============ */
+        .question-section {
+            min-height: 100svh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .question-card {
+            padding: 5rem 3rem;
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .q-heart {
+            width: 70px;
+            height: 70px;
+            margin-bottom: 2rem;
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 1.5;
+        }
+
+        .q-title {
+            color: var(--text-dark);
+            font-size: clamp(2.2rem, 6vw, 3.5rem);
+            font-style: italic;
+            line-height: 1.2;
+            margin-top: 1rem;
+        }
+
+        .q-sub {
+            color: var(--text-muted);
+            margin: 1.5rem auto 3rem;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            max-width: 500px;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            min-height: 70px;
+        }
+
+        .btn-yes {
+            background: var(--accent);
+            color: #0C1526;
+            border: none;
+            padding: 1.2rem 3rem;
+            font-family: 'Work Sans', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(233, 185, 180, 0.4);
+            letter-spacing: 0.05em;
+        }
+
+        .btn-yes:hover {
+            transform: translateY(-3px) scale(1.05);
+            background: var(--accent-hover);
+            color: #fff;
+            box-shadow: 0 15px 35px rgba(233, 185, 180, 0.5);
+        }
+
+        .btn-no {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            border: 1px solid rgba(233, 185, 180, 0.3);
+            padding: 1.2rem 2rem;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            position: relative;
+        }
+
+        .btn-no:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ============ CELEBRATION ============ */
+        /* Phase 3 is in celebracion.html */
+    </style>
+</head>
+
+<body>
+
+    <div class="floating-bg" id="floatingBg"></div>
+
+    <!-- ========================================== -->
+    <!-- FASE 1: CONTRASEÑA                         -->
+    <!-- ========================================== -->
+    <div id="phase1" class="phase active">
+        <section class="login-section">
+            <div class="login-card glass" id="loginCard">
+                <svg class="hero-heart" viewBox="0 0 32 29" style="width: 40px; height: 40px; margin-bottom: 1rem;">
+                    <path
+                        d="M16 28.5 C16 28.5 1.5 19.8 1.5 9.8 C1.5 4.9 5.4 1 10.2 1 C13 1 15 2.4 16 4.3 C17 2.4 19 1 21.8 1 C26.6 1 30.5 4.9 30.5 9.8 C30.5 19.8 16 28.5 16 28.5Z" />
+                </svg>
+                <h2>Solo para ti Alejandra</h2>
+                <p>Ingresa el nombre de algo muy especial que tenemos en común</p>
+                <input type="text" id="passwordInput" placeholder="Respuesta">
+                <button id="btnEnter">Entrar</button>
+                <p id="errorMsg" class="error-msg">Esa no es... Intenta otra vez 😉</p>
+            </div>
+        </section>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- FASE 2: LA CARTA Y LA PREGUNTA             -->
+    <!-- ========================================== -->
+    <div id="phase2" class="phase">
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-card glass">
+                <svg class="hero-heart" viewBox="0 0 32 29">
+                    <path
+                        d="M16 28.5 C16 28.5 1.5 19.8 1.5 9.8 C1.5 4.9 5.4 1 10.2 1 C13 1 15 2.4 16 4.3 C17 2.4 19 1 21.8 1 C26.6 1 30.5 4.9 30.5 9.8 C30.5 19.8 16 28.5 16 28.5Z" />
+                </svg>
+                <p class="eyebrow">Carta abierta para</p>
+                <h1>Alejandra</h1>
+            </div>
+
+            <div class="scroll-cue">
+                <span>descubre más</span>
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 5v14M19 12l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+        </section>
+
+        <!-- LETTER -->
+        <section>
+            <div class="letter-wrap reveal">
+                <div class="letter glass">
+                    <p>Te escribo esta carta aquí porque así como los recuerdos que tenemos y los que sigamos
+                        construyendo en el futuro quedarán guardados en esta página, también quiero que quede siempre
+                        escrito lo mucho que siento por vos.</p>
+                    <p>Ambos sabemos cómo empezó todo. Desde la primera vez que nos vimos afuera de la U, esa vez
+                        recuerdo que no hablamos, pero sí fue el primer momento en que te vi. Desde entonces me
+                        pareciste muy atractiva. Después pasó un tiempo y coincidimos en la cafetería; ahí sí hablamos y
+                        me pareciste muy interesante, pude apreciar más tu belleza de cerca, sobre todo tu hermosa
+                        mirada.</p>
+                    <p>Yo recuerdo que le oré a Dios, pero no fue una oración como la mayoría lo hace, que piden una
+                        persona según sus gustos o intereses. Yo simplemente le pedí a Dios no sentirme solo, y siento
+                        que Él respondió de la mejor manera que ni yo esperaba: enviándote a mi vida. Pero claro, yo no
+                        sabía qué tan especial ibas a ser, así que dejé que el tiempo pasara sin forzar nada.</p>
+                    <p>Después nuestra relación fue avanzando. Me acuerdo cuando nos encontramos en el micro de
+                        casualidad y yo me senté atrás tuyo. Me podía sentar al lado, pero como dije, dejé todo en las
+                        manos de Dios y no buscaba forzar nada. A pesar de que me pareciste super atractiva e
+                        interesante, le había hecho esa promesa a Dios de dejar todo en sus manos. Entonces me acuerdo
+                        que ese día no solo no me esperaba encontrarte en el micro, sino que tampoco me esperaba que te
+                        cambiaras de asiento y fueras a mi lado a charlar, y que me siguieras en Instagram y
+                        respondieras una nota. Desde ahí me di cuenta de que tal vez vos eras ese llamado que pedí, así
+                        que fui más constante al buscarte charla, hasta que un día me dijiste para jugar Wolf y yo sin
+                        dudarlo acepté.</p>
+                    <p>Mientras jugábamos en llamada te fui conociendo más profundamente. Me fui dando cuenta de que
+                        tenés un corazón muy noble y que no te merecías las cosas que te pasaron. Fuimos acercándonos
+                        cada vez más, hasta aquella llamada donde me dijiste que no querías nada con nadie, y eso me
+                        dolió, porque yo sí quería algo con vos. Entonces te dije que me gustabas y decidí alejarme por
+                        miedo a no ser correspondido, y me acuerdo que pasaba el tiempo y vos no respondías. Entonces yo
+                        me sentía muy triste, pero finalmente respondiste y quedamos en charlar en persona. Esa vez que
+                        hablamos, cuando te dije &ldquo;vamos poco a poco&rdquo;, fue porque yo hice esa promesa de
+                        dejar todo en las manos de Dios y no apresurarme. Sabía que poco a poco íbamos a formar un
+                        vínculo cada vez más fuerte y que los tiempos de Dios son perfectos.</p>
+                    <p>Me acuerdo que cuando te dije que me gustabas, vos me preguntaste qué es lo más lindo de vos y yo
+                        te dije tus ojos. Con el tiempo me di cuenta de que lo más lindo no son tus ojos, lo más lindo
+                        es tu hermosa sonrisa. Cada parte de vos es perfecta, pero tu sonrisa es mi favorita porque es
+                        el reflejo de felicidad; aquellas sonrisas, aquellas risas, aquellas miradas son el reflejo de
+                        felicidad, una felicidad que quiero que sientas siempre a mi lado.</p>
+                    <p>Después de esa charla nos fuimos conociendo más, pero ya no como amigos, sino como dos personas
+                        que se gustan y lo saben. Fuimos avanzando poco a poco, y eso es lo que más me gusta: que
+                        nuestra relación nunca fue algo apresurado ni espontáneo. Siempre fue un proceso donde ambos nos
+                        fuimos enamorando cada vez más el uno del otro, paso a paso, en las buenas y en las malas,
+                        escogiéndonos siempre.</p>
+                    <p>Cada día me enamoro más de vos. Miro atrás y recuerdo no solo los momentos bonitos, sino también
+                        las discusiones, y cómo seguimos adelante a pesar de cualquier cosa que haya pasado. Cada vez
+                        estoy más convencido de que sos el amor de mi vida, porque no solo estamos juntos cuando salimos
+                        o cuando nos vemos, sino que también permanecemos juntos a pesar de cualquier tormenta. Eso es
+                        el verdadero amor: estar en las buenas y en las malas, aprender de nuestros errores, mejorar
+                        cada vez y escogiéndonos por encima de todo.</p>
+                    <p>Mi niña preciosa, para mí ya dimos este gran paso desde el día que te dije que me gustabas y fui
+                        correspondido, pero sé que no te lo había pedido formalmente. Siento que llegó el momento,
+                        porque no quiero que dudes nunca de todo el amor que siento por vos. Siempre te voy a entregar
+                        todo el amor del mundo que te merecés.</p>
+                    <div class="letter-sign">
+                        Con todo mi corazón,
+                        <span>Alejandro
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUESTION -->
+        <section class="question-section" id="question">
+            <div class="question-card glass reveal">
+                <svg class="q-heart" viewBox="0 0 32 29">
+                    <path
+                        d="M16 28.5 C16 28.5 1.5 19.8 1.5 9.8 C1.5 4.9 5.4 1 10.2 1 C13 1 15 2.4 16 4.3 C17 2.4 19 1 21.8 1 C26.6 1 30.5 4.9 30.5 9.8 C30.5 19.8 16 28.5 16 28.5Z" />
+                </svg>
+                <h2 class="q-title">Abigail Alejandra Nogales Tany, ¿me concedes el honor de ser tu novio?</h2>
+
+                <div class="btn-row" id="btnRow">
+                    <button class="btn-yes" id="btnYes">Sí, quiero 🤍❤️</button>
+                    <button class="btn-no" id="btnNo">Permíteme pensarlo</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+
+    <script>
+        // Floating hearts background
+        const bg = document.getElementById('floatingBg');
+        const heartSVG = `<svg viewBox="0 0 32 29" fill="rgba(255, 255, 255, 0.12)"><path d="M16 28.5 C16 28.5 1.5 19.8 1.5 9.8 C1.5 4.9 5.4 1 10.2 1 C13 1 15 2.4 16 4.3 C17 2.4 19 1 21.8 1 C26.6 1 30.5 4.9 30.5 9.8 C30.5 19.8 16 28.5 16 28.5Z"/></svg>`;
+
+        for (let i = 0; i < 22; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerHTML = heartSVG;
+            const size = Math.random() * 25 + 15;
+            const duration = Math.random() * 15 + 15;
+            heart.style.width = size + 'px';
+            heart.style.height = size + 'px';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = duration + 's';
+            // Negative delay = animation starts mid-cycle, so hearts are already floating on load
+            heart.style.animationDelay = '-' + (Math.random() * duration) + 's';
+            bg.appendChild(heart);
+        }
+
+        // Logic for hiding/showing phases
+        function switchPhase(fromPhaseId, toPhaseId) {
+            const from = document.getElementById(fromPhaseId);
+            const to = document.getElementById(toPhaseId);
+
+            from.style.opacity = '0';
+            setTimeout(() => {
+                from.classList.remove('active');
+                from.style.display = 'none';
+
+                to.style.display = 'block';
+                // small delay to let display block apply before adding active class for animation
+                setTimeout(() => {
+                    to.classList.add('active');
+                    window.scrollTo(0, 0); // scroll to top when changing page
+                    initRevealObserver(); // re-init observer for new phase
+                }, 50);
+            }, 600); // Wait for fade out
+        }
+
+        // FASE 1: Login Logic
+        const btnEnter = document.getElementById('btnEnter');
+        const passwordInput = document.getElementById('passwordInput');
+        const errorMsg = document.getElementById('errorMsg');
+        const loginCard = document.getElementById('loginCard');
+
+        function attemptLogin() {
+            const val = passwordInput.value.trim().toLowerCase();
+            if (val === 'almendra') {
+                switchPhase('phase1', 'phase2');
+            } else {
+                errorMsg.classList.add('show');
+                loginCard.classList.remove('shake');
+                void loginCard.offsetWidth; // trigger reflow
+                loginCard.classList.add('shake');
+            }
+        }
+
+        btnEnter.addEventListener('click', attemptLogin);
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') attemptLogin();
+        });
+
+        // FASE 2: Interactive "No" Button
+        const btnNo = document.getElementById('btnNo');
+        const btnRow = document.getElementById('btnRow');
+        let dodgeCount = 0;
+        const dodgeTexts = ["Permíteme pensarlo", "¿Estás segura?", "Tómate tu tiempo", "Última oportunidad", "...", "es si o ya"];
+
+        function dodge() {
+            if (btnNo.textContent === "ya") return;
+
+            const maxX = 100;
+            const maxY = 60;
+            const x = Math.random() * maxX * (Math.random() > 0.5 ? 1 : -1);
+            const y = Math.random() * maxY * (Math.random() > 0.5 ? 1 : -1);
+
+            btnNo.style.transform = `translate(${x}px, ${y}px)`;
+            dodgeCount++;
+            if (dodgeCount <= dodgeTexts.length) {
+                btnNo.textContent = dodgeTexts[Math.min(dodgeCount - 1, dodgeTexts.length - 1)];
+            }
+        }
+
+        function handleAccept() {
+            launchConfetti();
+            setTimeout(() => {
+                window.location.href = 'celebracion.html';
+            }, 1000);
+        }
+
+        btnNo.addEventListener('mouseenter', dodge);
+        btnNo.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (btnNo.textContent === "ya") {
+                handleAccept();
+            } else {
+                dodge();
+            }
+        });
+        btnNo.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (btnNo.textContent === "ya") {
+                handleAccept();
+            } else {
+                dodge();
+            }
+        }, { passive: false });
+
+        // FASE 2 to FASE 3: Accept Button
+        const btnYes = document.getElementById('btnYes');
+
+        btnYes.addEventListener('click', handleAccept);
+
+        function launchConfetti() {
+            const colors = ['#E9B9B4', '#B5697A', '#FBF6EE', '#0C1526'];
+            for (let i = 0; i < 150; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti';
+
+                if (Math.random() > 0.5) c.style.borderRadius = '50%';
+
+                const size = Math.random() * 8 + 6;
+                c.style.width = size + 'px';
+                c.style.height = size + 'px';
+                c.style.left = Math.random() * 100 + 'vw';
+                c.style.background = colors[Math.floor(Math.random() * colors.length)];
+                c.style.animationDuration = (2 + Math.random() * 3) + 's';
+                c.style.opacity = Math.random() + 0.5;
+                document.body.appendChild(c);
+                setTimeout(() => c.remove(), 6000);
+            }
+        }
+
+        // Reveal on scroll logic
+        function initRevealObserver() {
+            const revealEls = document.querySelectorAll('.phase.active .reveal');
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('in');
+                        io.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            revealEls.forEach((el, i) => {
+                el.style.transitionDelay = (i % 5) * 0.1 + 's';
+                io.observe(el);
+            });
+        }
+
+        // Init for the first phase
+        initRevealObserver();
+
+    </script>
+</body>
+
+</html>
